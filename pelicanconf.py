@@ -3,7 +3,7 @@
 from __future__ import unicode_literals
 
 AUTHOR = 'Ales Stibal <astib@mag0.net>'
-SITENAME = 'Smithproxy - fast mitm proxy'
+SITENAME = 'Smithproxy - (not only) tls mitm proxy'
 SITEURL = ''
 
 PATH = 'content'
@@ -20,14 +20,15 @@ AUTHOR_FEED_ATOM = None
 AUTHOR_FEED_RSS = None
 
 # Blogroll
-LINKS = (('Pelican', 'http://getpelican.com/'),
-         ('Python.org', 'http://python.org/'),
-         ('Jinja2', 'http://jinja.pocoo.org/'),
-         ('You can modify those links in your config file', '#'),)
+LINKS = (('Smithproxy GIT', 'https://bitbucket.org/astibal/smithproxy/'),
+         ('Socle library GIT', 'https://bitbucket.org/astibal/socle/'),
+            ('pplay', 'https://pypi.org/project/pplay/'),
+         )
 
 # Social widget
-SOCIAL = (('You can add links in your config file', '#'),
-          ('Another social link', '#'),)
+SOCIAL = (('Smithproxy & tools discord', 'https://discord.gg/vf4Qwwt'),
+          ('Mailing list', 'mailto:smithproxy-users@googlegroups.com'),
+          ('Technical support', 'mailto:support@smithproxy.org'))
 
 DEFAULT_PAGINATION = 10
 

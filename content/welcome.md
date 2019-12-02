@@ -1,11 +1,17 @@
 Title: Welcome to smithproxy homepage!
 Date: 2019-11-30 12:12
 Category: intro
+save_as: index.html
 
 ** THIS SITE IS IN PROGRESS OF MIGRATION FROM OLD SITE SYSTEM **  
 ** THANKS FOR PATIENCE **  
 
-Welcome on smithproxy homepage. **Smithproxy** is a free, open-source, fast and featured transparent proxy, written in C++.
+<a href="https://scan.coverity.com/projects/smithproxy">
+  <img alt="Coverity Scan Build Status"
+       src="https://scan.coverity.com/projects/19942/badge.svg"/>
+</a> 
+  
+Welcome on project homepage. **Smithproxy** is a free, open-source, fast and featured transparent proxy written in C++.
 
 Its goal is to provide:
 

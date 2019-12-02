@@ -28,7 +28,7 @@ LINKS = (('Smithproxy GIT', 'https://bitbucket.org/astibal/smithproxy/'),
 # Social widget
 SOCIAL = (('Smithproxy & tools discord', 'https://discord.gg/vf4Qwwt'),
           ('Mailing list', 'mailto:smithproxy-users@googlegroups.com'),
-          ('Technical support', 'mailto:support@smithproxy.org'))
+          ('Become a patron', 'https://www.patreon.com/bePatron?u=23520766'))
 
 DEFAULT_PAGINATION = 10
 

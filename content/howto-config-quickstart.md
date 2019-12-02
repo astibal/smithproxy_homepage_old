@@ -16,7 +16,8 @@ If not done yet, please finalize your network environment. Configure linux inter
 Now open configuration file `/etc/smithproxy/smithproxy.startup.cfg`, and change `SMITH_INTERFACE` variable to your *internal* interface name. This is interface, where almost all *routed* traffic will be inspected (meaning redirected to tproxy and processed by smithproxy). You can also have a look on other options and change them to your liking.
 
 For my appliance it looks like this:
-```
+``` 
+:::text
 ...
 # # SMITH_INTERFACE # 
 # # used to specify where the TPROXY will be applied. It should be usually i
@@ -31,6 +32,7 @@ SMITH_INTERFACE='ens9'
 You cannot magically break into or hack TLS. In order to do TLS MitM, you need certificate authority your applications trust which signs all faked certificates for you. There is default one pre-installed by smithproxy. You can use it, but   don't do that, please. There is a script `sx_regencerts` which can create one for you.
 
 ```
+:::text
 root@pixie:/# sx_regencerts 
 Dry certificate check? [Dry/Normal]? Normal
 Do you want to check and generate new certificates? [No/Yes]? Y
@@ -63,14 +65,18 @@ root@pixie:/#
 ```
 
 > `sx_regencerts` generates CA pair, server cert pair, client pair (not used) and portal cert. 
-Portal certificate is most tricky one and `sx_regencerts` tries to play it smart.
+Portal certificate is most tricky one and `sx_regencerts` tries to play it smart.  
+
 * CA key-pair - used to fake original certificates
-* Server cert key-pair - certificate is not used, only public and private key in it. key-pair is used to be construct CSR to generate faked certificate and then signed by CA.
-* Portal cert - most tricky one. This is certificate for smithproxy login portal, if authentication is used. This portal FQDN is configurable in config file (see `settings/auth_portal/address setting`). It could be IP, but FQDN is nicer and preferred.
+* Server cert key-pair - certificate is not used, only public and private key in it.  
+    key-pair is used to be construct CSR to generate faked certificate and then signed by CA.
+* Portal cert - This is certificate for smithproxy login portal, if authentication is used.  
+    This portal FQDN is configurable in config file (see `settings/auth_portal/address setting`). It could be IP, but FQDN is nicer and preferred.
 
 Ok, now `smithproxy` is finally using an unique CA certificate keypair. SSL applications passing smithproxy *MUST* trust this CA certificate, in order to work properly. You can display certificate issing this command:
 
 ```
+:::text
 root@pixie:/# cat /etc/smithproxy/certs/default/ca-cert.pem 
 -----BEGIN CERTIFICATE-----
 MIIB6zCCAZGgAwIBAgIKMXGTlQjGXjj+1TAKBggqhkjOPQQDAjBIMRswGQYDVQQD
@@ -91,6 +97,7 @@ MocNOo6Y4XArERJ8SEOD
 
 You can also visually check it using openssl command:
 ```
+:::text
 root@pixie:/# openssl x509 -in /etc/smithproxy/certs/default/ca-cert.pem -noout -text
 Certificate:
     Data:
@@ -134,9 +141,10 @@ Certificate:
 ### Main configuration file */etc/smithproxy/smithproxy.cfg*
 This file contains most of smithproxy settings to make it run. It's pre-set for safe values which won't hurt probably anyone. It's not configured for any capture, TLS security, bypass or any from other smithproxy fancy features.
 
-##### Traffic policies
+#### Traffic policies
 Probably first thing you gonna touch are policies. Let's have a look at one, allowing all traffic. They are processed top-down and contain many other settings and profiles. They look this way in their simplest form:
 ```
+:::text
 policy = (
     {
         proto = "udp";
@@ -168,11 +176,13 @@ policy = (
     }
 )
 
-###### Matching policy elements
-
 ```
+
+#### Policy elements
+
 First policy matches all *UDP* traffic. As you see, they contain different identifiers, referring to their own, respective config parts (6 is really TCP and 17 UDP):
 ```
+:::text
 proto_objects = {
     tcp = {
         id = 6;
@@ -186,6 +196,7 @@ Also, there are IP address and port-range configuration objects.
 
 First, let's see address objects:
 ```
+:::text
 address_objects = {
     any = {
         type = 0;
@@ -200,6 +211,7 @@ address_objects = {
 We have here two types, address (0) and fqdn (1). FQDN address is one learned from DNS. But don't worry, if it's not, smithproxy is trying to periodically refreshing them.
 ... and finally port objects:
 ```
+:::text
 port_objects = {
     all = {
         start = 0;
@@ -213,9 +225,10 @@ port_objects = {
 ```
 These are *matching* parts of policy. That being said, these are compared to traffic in order to decide if actions specified in the policy will be (or not) applied to the traffic. Obviously, if traffic matches, next policies are not attempted to match or process.
 
-###### Action policy elements
+#### Policy Actions
 
 ```
+:::text
 policy = (
     {
         // ... action elements 
@@ -223,16 +236,17 @@ policy = (
         nat = "auto";
     },
 ```
-action = [ "accept" | "reject" ]
-nat = [ "none" | "auto" ]
+`action = [ "accept" | "reject" ]`  
+`nat = [ "none" | "auto" ]`
 
-Setting `action = "accept"` or `reject` is obvious (accepting - passing traffic, or dropping it). 
+Setting `action = "accept"` or `reject` is obvious (accepting - passing traffic, or dropping it).  
 Setting `nat = "none"` controls if traffic is attempted to keep its original IP and source port. This is supported for TPROXY traffic origin. Setting `nat = "auto"`, smithproxy will let it up to OS to decide what IP and port will be used (IP of outbound interface, and port from dynamic so-called ephemeral pool). 
 
-###### Profile policy elements 
+##### Profile policy elements 
 
 Let's start with example:
 ``` 
+:::text
     },
     {
         // ....
@@ -252,17 +266,18 @@ These are influencing what *will be done with the connection*:
 * auth_profile - should IP be authenticated (portal redirection)?
 * alg_dns_profile - DNS settings, transparent DNS cache
 
-##### Advanced configuration
+#### Advanced configuration
 We can't cover everything in quick howto document. However, you might be interested in following, most-frequently used features:
 
 * Content dumping
 * TLS parameters suitable for wireshark decryption
 
 
-###### Content dumping to files
+##### Content dumping to files
 Content dumping is NOT enabled by default. To write content into files, you need to:
 1) set existing directory where to save .smcap files
 ```
+:::text
 settings = {
     // ...
     write_payload_dir = "/var/local/smithproxy/data";
@@ -271,6 +286,7 @@ settings = {
 ```
 2) configure policy profile
 ```
+:::text
 content_profiles = {
     writer = {
         write_payload = TRUE;
@@ -280,6 +296,7 @@ content_profiles = {
 ```
 3) apply profile created above on the policy 
 ```
+:::text
 policy = (
     {
         proto = "tcp";
@@ -301,6 +318,7 @@ policy = (
 
 If followed correctly, you should now see in the directory .smcap files:
 ```
+:::text
 root@cr3:/var/local/smithproxy# find .
 .
 ./data
@@ -314,6 +332,7 @@ root@cr3:/var/local/smithproxy# find .
 
 Smcaps are human-readable hexdump text files, later replayable by pplay tool.
 ```
+:::text
 Mon Oct 21 03:48:44 2019
 +295518: ssli_192.168.122.1:52098-ssli_172.217.23.202:443(ssli_172.217.23.202:443-ssli_192.168.122.1:52098)
 Connection start
@@ -325,13 +344,20 @@ Mon Oct 21 03:48:44 2019
 >[0020]   24 63 74 3D 61 70 70 6C   69 63 61 74 69 6F 6E 2F   $ct=appl ication/
 
 ```
-PPlay has its own howto on the project landing page here [pplay](https://bitbucket.org/astibal/pplay)
+PPlay has its own howto on the project landing page here [pplay](https://pypi.org/project/pplay/).  
+You can easily install it with 
+
+```
+:::text
+pip install pplay
+```
 
 
-###### SSL keylog
+##### SSL keylog
 
 To enable keylog dumping, please edit corresponding TLS profile:
 ```
+:::text
 tls_profiles = {
     default = {
         // ...
@@ -346,10 +372,12 @@ directly usable by wireshark in `Protocol preferences > SSL > (Pre)-Master-Secre
 
 If everything above is set, you can start smithproxy using standard 
 ```
+:::text
 service smithproxy start
 ```
 To make smithproxy start on boot, issue this command:
 ```
+:::text
 update-rc.s
 ```
 
@@ -357,6 +385,7 @@ update-rc.s
 Smithproxy has its own CLI. Run `smithproxy_cli`, you will get output as follows:
 
 ```
+:::text
 root@cr3:~# smithproxy_cli 
 Trying 127.0.0.1...
 Connected to localhost.
@@ -368,6 +397,7 @@ smithproxy(cr3) >
 ```
 run 
 ```
+:::text
 smithproxy(cr3) > enable
 Password: 
 smithproxy(cr3) #
@@ -385,6 +415,7 @@ There are various command areas. Main are:
 
 For example:
 ```
+:::text
 smithproxy(cr3) # diag proxy session list 
 SocksProxy[MitmProxy: l:ssli_192.168.122.1:44252 <+> r:ssli_198.205.91.7:443  policy: 1 up/down: 0/5k]
 SocksProxy[MitmProxy: l:ssli_192.168.122.1:44226 <+> r:ssli_198.181.99.133:443  policy: 1 up/down: 0/0]

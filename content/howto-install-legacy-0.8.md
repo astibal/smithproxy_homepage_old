@@ -1,6 +1,7 @@
 Title: Howto install legacy 0.8 from .deb
 Date: 2019-12-02 22:00
 Category: howto
+tags: deb, install, howto, 0.8
 
 # Installing Smithproxy from binary .deb packages (stable)
 
@@ -9,14 +10,8 @@ This doc is by far not complete and it even is not supposed to be. It's quick-st
 
 # Installation script 
 
-
-Before of installing anything - refresh APT - it's always good idea, right?
-
-```
-sudo apt update
-```
-
-Now run this script. You can paste it all to shell, it will do the work. As of time of the writing of this howto, script is basically a bit touched Dockerfile for ubuntu docker image. You can see it online here, in my [bitbucket 0.8 repository](https://bitbucket.org/astibal/smithproxy/src/0.8/tools/docker/Dockerfile-ubuntu18.04-run) ... and maybe update it to your liking. 
+You can simply paste it all into shell, it will do the work.   
+As of time of the writing of this howto, script is basically a bit touched Dockerfile for ubuntu docker image. You can see it online here, in my [bitbucket 0.8 repository](https://bitbucket.org/astibal/smithproxy/src/0.8/tools/docker/Dockerfile-ubuntu18.04-run) ... and maybe update it to your liking. 
 ```
 echo "=== installing bootstrapping tools" && \
 apt update && apt install -y \

@@ -19,6 +19,8 @@ TRANSLATION_FEED_ATOM = None
 AUTHOR_FEED_ATOM = None
 AUTHOR_FEED_RSS = None
 
+# MARKDOWN_EXTENSIONS = ['codehilite(css_class=highlight, guess_lang=False)', 'extra']
+
 # Blogroll
 LINKS = (('Smithproxy GIT', 'https://bitbucket.org/astibal/smithproxy/'),
          ('Socle library GIT', 'https://bitbucket.org/astibal/socle/'),

@@ -5,14 +5,10 @@ tags: deb, install, howto, 0.8
 
 # Installing Smithproxy from binary .deb packages (stable)
 
-# Foreword
-This doc is by far not complete and it even is not supposed to be. It's quick-start with some commentary. You don't need to read paragraphs with horizontal lines. They are giving background information not necessary to comprehend to install smithproxy.
-
-# Installation script 
-
 You can simply paste it all into shell, it will do the work.   
 As of time of the writing of this howto, script is basically a bit touched Dockerfile for ubuntu docker image. You can see it online here, in my [bitbucket 0.8 repository](https://bitbucket.org/astibal/smithproxy/src/0.8/tools/docker/Dockerfile-ubuntu18.04-run) ... and maybe update it to your liking. 
 ```
+:::text
 echo "=== installing bootstrapping tools" && \
 apt update && apt install -y \
 wget \
@@ -34,3 +30,6 @@ apt remove -y g++ gcc perl manpages && apt -y autoremove
 ```
 > How does it work? It will install all base tools and dependencies. I am using DNS for newest package versions naming `latest.ubuntu1804.deb.smithproxy.org` will  then always resolve in freshest smithproxy .deb package URL for (in this example) Ubuntu 18.04.
 
+# Further reading
+
+You may want to check [Config quick-start guide](http://smithproxy.org/config-quick-start.html).

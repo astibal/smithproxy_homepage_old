@@ -1,4 +1,4 @@
-Title: Smithproxy weekly update 2019 Dec/2,3c
+Title: Smithproxy weekly update 2019 Dec/2,3
 Date: 2019-12-16
 Category: news
 tags: news, patreon, devel

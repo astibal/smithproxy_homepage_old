@@ -9,7 +9,11 @@ save_as: index.html
 <a href="https://scan.coverity.com/projects/smithproxy">
   <img alt="Coverity Scan Build Status"
        src="https://scan.coverity.com/projects/19942/badge.svg"/>
-</a> 
+</a>
+<a href="https://travis-ci.org/github/astibal/smithproxy">
+  <img alt="Travis-CI Build status"
+       src=https://travis-ci.org/astibal/smithproxy.svg?branch=master>
+</a>
   
 Welcome on project homepage. **Smithproxy** is a free, open-source, fast and featured transparent proxy written in C++.
 
